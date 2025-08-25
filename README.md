@@ -1,6 +1,7 @@
-﻿# e_tricks_backend
+﻿
+# template-express-clerk-mysql
 
-Backend para una tienda e-commerce de calzados, desarrollado con Node.js, Express, TypeScript y MongoDB Atlas.
+Backend base para proyectos Node.js con autenticación Clerk, Express y conexión a base de datos MySQL.
 
 ---
 
@@ -9,8 +10,8 @@ Backend para una tienda e-commerce de calzados, desarrollado con Node.js, Expres
 - **Node.js**
 - **Express.js**
 - **TypeScript**
-- **MongoDB Atlas**
-- **Mongoose**
+- **MySQL** (usando `mysql2`)
+- **Clerk** (autenticación)
 - **dotenv**
 
 ---
@@ -18,11 +19,17 @@ Backend para una tienda e-commerce de calzados, desarrollado con Node.js, Expres
 ## 🧠 Estructura del proyecto
 
 src/
-├── config/ # Configuración de la base de datos
-├── interfaces/ # Interfaces TypeScript
-├── models/ # Esquemas de Mongoose
-├── routes/ # Rutas de la API
-└── app.ts # Archivo principal
+├── config/        # Configuración de la base de datos
+├── controllers/   # Controladores de rutas
+├── dao/           # Acceso a datos (consultas SQL)
+├── interfaces/    # Interfaces TypeScript
+├── middleware/    # Middlewares de autenticación y otros
+├── routes/        # Rutas de la API
+├── scripts/       # Scripts auxiliares
+├── services/      # Lógica de negocio
+├── types/         # Tipos personalizados
+├── utils/         # Utilidades
+└── app.ts         # Archivo principal
 
 ---
 
@@ -30,13 +37,19 @@ src/
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/AJoelCastro/template-express-clerk-mongodb-atlas.git
+git clone https://github.com/AJoelCastro/template-express-clerk-mysql.git
 
 # Entrar al proyecto
-cd template-express-clerk-mongodb-atlas
+cd template-express-clerk-mysql
 
 # Instalar dependencias
 npm install
 
-# Correr el programa
+# Correr el programa en desarrollo
 npm run dev
+
+# Compilar TypeScript
+npm run build
+
+# Iniciar en producción
+npm start
