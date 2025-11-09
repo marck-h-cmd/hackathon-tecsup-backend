@@ -3,16 +3,16 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import connectDB from './config/database';
+import { connectAllDatabases } from './config/database';
 import userRoutes from './routes/User';
 import { ensureAdminUserExists } from './scripts/InitAdmin';
 dotenv.config();
 
 const app: Express = express();
 
-// Conectar a MongoDB Atlas
-connectDB().then(() => {
-    console.log('Database connection ready');
+// Conectar a MySQL con Sequelize
+connectAllDatabases().then(() => {
+    console.log('Database connections ready');
     ensureAdminUserExists();
 }).catch((err) => {
     console.log('Error starting database:', err);
