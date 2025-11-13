@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectAllDatabases } from './config/database';
 import userRoutes from './routes/User';
+import chatRoutes from './routes/Chat';
 import { ensureAdminUserExists } from './scripts/InitAdmin';
 dotenv.config();
 
@@ -32,7 +33,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
-app.use('/user', userRoutes)
+app.use('/user', userRoutes);
+app.use('/chat', chatRoutes);
 
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {
