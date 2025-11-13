@@ -26,6 +26,20 @@ const SesionTutoriaSchema = new Schema(
   }
 );
 
+const GeneralChatSchema = new Schema(
+  {
+    _id: { type: String, required: true },
+    estudiante_id: { type: Number, required: true, index: true },
+    mensajes: { type: [MensajeSchema], default: [] },
+    fecha_inicio: { type: Date, required: true },
+    fecha_fin: { type: Date, required: true }
+  },
+  {
+    timestamps: true,
+    collection: 'sesiones'
+  }
+);
+
 // Índices
 SesionTutoriaSchema.index({ estudiante_id: 1, fecha_inicio: -1 });
 SesionTutoriaSchema.index({ curso_id: 1 });
@@ -33,5 +47,10 @@ SesionTutoriaSchema.index({ tema_id: 1 });
 
 export const SesionTutoria = model<ISesionTutoria>(
   'SesionTutoria', 
-  SesionTutoriaSchema
+  SesionTutoriaSchema,
+);
+
+export const GeneralChat = model(
+  'chat',
+  GeneralChatSchema
 );
