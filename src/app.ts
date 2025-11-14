@@ -7,18 +7,24 @@ import { connectAllDatabases } from './config/database';
 import userRoutes from './routes/User';
 import chatRoutes from './routes/Chat';
 import { ensureAdminUserExists } from './scripts/InitAdmin';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger';
 dotenv.config();
 
 const app: Express = express();
 
-// Conectar a MySQL con Sequelize
-connectAllDatabases().then(() => {
-    console.log('Database connections ready');
-    ensureAdminUserExists();
-}).catch((err) => {
-    console.log('Error starting database:', err);
-    process.exit(1);
-});
+// Conectar a MySQL con Sequelize (se puede omitir en desarrollo con SKIP_DB=true)
+if (process.env.SKIP_DB === 'true') {
+    console.log('SKIP_DB=true -> omitiendo conexiones a base de datos');
+} else {
+    connectAllDatabases().then(() => {
+        console.log('Database connections ready');
+        ensureAdminUserExists();
+    }).catch((err) => {
+        console.log('Error starting database:', err);
+        process.exit(1);
+    });
+}
 
 // CORS configuration
 app.use(cors({
@@ -35,6 +41,13 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Routes
 app.use('/user', userRoutes);
 app.use('/chat', chatRoutes);
+
+// Swagger UI (OpenAPI)
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/docs/json', (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
 
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {

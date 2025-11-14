@@ -19,64 +19,202 @@ const router = express.Router();
 // ============================================
 
 /**
- * POST /chat/session
- * Crea una nueva sesión de chat
+ * @openapi
+ * /chat/session:
+ *   post:
+ *     tags:
+ *       - Chat
+ *     summary: Crea una nueva sesión de chat
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       201:
+ *         description: Sesión creada
  */
 router.post('/session', authenticateClerkToken, createChatSession);
 
 /**
- * GET /chat/session/:sesionId
- * Obtiene una sesión de chat por ID
- * Query params: ?tipo=tutoria|general
+ * @openapi
+ * /chat/session/{sesionId}:
+ *   get:
+ *     tags:
+ *       - Chat
+ *     summary: Obtiene una sesión de chat por ID
+ *     parameters:
+ *       - in: path
+ *         name: sesionId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: tipo
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Sesión
  */
 router.get('/session/:sesionId', authenticateClerkToken, getChatSession);
 
 /**
- * POST /chat/message
- * Envía un mensaje a una sesión existente
- * Body: { sesion_id, contenido, tipo?, tipo_sesion?, ai_config? }
+ * @openapi
+ * /chat/message:
+ *   post:
+ *     tags:
+ *       - Chat
+ *     summary: Envía un mensaje a una sesión existente
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Mensaje enviado
  */
 router.post('/message', authenticateClerkToken, sendMessage);
 
 /**
- * POST /chat/session/:sesionId/message
- * Envía un mensaje a una sesión específica
+ * @openapi
+ * /chat/session/{sesionId}/message:
+ *   post:
+ *     tags:
+ *       - Chat
+ *     summary: Envía un mensaje a una sesión específica
+ *     parameters:
+ *       - in: path
+ *         name: sesionId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Mensaje enviado
  */
 router.post('/session/:sesionId/message', authenticateClerkToken, sendMessage);
 
 /**
- * GET /chat/sessions
- * Obtiene sesiones de chat con filtros
- * Query params: estudiante_id, curso_id, tema_id, fecha_inicio, fecha_fin, tipo, page, limit
+ * @openapi
+ * /chat/sessions:
+ *   get:
+ *     tags:
+ *       - Chat
+ *     summary: Obtiene sesiones de chat con filtros
+ *     parameters:
+ *       - in: query
+ *         name: estudiante_id
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lista de sesiones
  */
 router.get('/sessions', authenticateClerkToken, getChatSessions);
 
 /**
- * PUT /chat/session/:sesionId
- * Actualiza una sesión de chat
- * Query params: ?tipo=tutoria|general
+ * @openapi
+ * /chat/session/{sesionId}:
+ *   put:
+ *     tags:
+ *       - Chat
+ *     summary: Actualiza una sesión de chat
+ *     parameters:
+ *       - in: path
+ *         name: sesionId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Sesión actualizada
  */
 router.put('/session/:sesionId', authenticateClerkToken, updateChatSession);
 
 /**
- * GET /chat/student/:estudianteId/last-session
- * Obtiene la última sesión activa de un estudiante
- * Query params: ?tipo=tutoria|general
+ * @openapi
+ * /chat/student/{estudianteId}/last-session:
+ *   get:
+ *     tags:
+ *       - Chat
+ *     summary: Obtiene la última sesión activa de un estudiante
+ *     parameters:
+ *       - in: path
+ *         name: estudianteId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Última sesión
  */
 router.get('/student/:estudianteId/last-session', authenticateClerkToken, getLastActiveSession);
 
 /**
- * POST /chat/student/:estudianteId/session
- * Obtiene o crea una sesión de chat para un estudiante
- * Body: { tipo?, curso_id?, tema_id? }
+ * @openapi
+ * /chat/student/{estudianteId}/session:
+ *   post:
+ *     tags:
+ *       - Chat
+ *     summary: Obtiene o crea una sesión de chat para un estudiante
+ *     parameters:
+ *       - in: path
+ *         name: estudianteId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Sesión obtenida o creada
  */
 router.post('/student/:estudianteId/session', authenticateClerkToken, getOrCreateSession);
 
 /**
- * POST /chat
- * Endpoint principal para chatear con el bot
- * Obtiene o crea sesión y envía mensaje en una sola llamada
- * Body: { estudiante_id, contenido, tipo?, curso_id?, tema_id?, ai_config? }
+ * @openapi
+ * /chat:
+ *   post:
+ *     tags:
+ *       - Chat
+ *     summary: Endpoint principal para chatear con el bot
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Respuesta del bot
  */
 router.post('/', authenticateClerkToken, chatWithBot);
 
