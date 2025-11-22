@@ -1,3 +1,6 @@
+
+import { ExclusionConstraintError } from "sequelize";
+
 export enum TipoUsuario {
     ESTUDIANTE = 'estudiante',
     ADMIN = 'admin',
@@ -66,4 +69,19 @@ export enum TipoUsuario {
      TEXTO=  'texto',
      SELECCION = 'seleccion',
      RELACIONAR = 'relacionar'
+  }
+
+
+  export enum TTipoNotificacion {
+    TAREA= 'tarea' ,
+    VENCIMIENTO= 'vencimiento' ,
+    HORARIO =  'horario' ,
+    RECOMENDACION =  'recomendacion' ,
+    GENERAL ='general'
+  }
+
+  export enum TPrioridad {
+    BAJA = 'baja' ,
+    MEDIA = 'media' ,
+    ALTA =  'alta'
   }
