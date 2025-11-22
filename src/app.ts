@@ -4,8 +4,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectAllDatabases } from './config/database';
-import userRoutes from './routes/User';
-import chatRoutes from './routes/Chat';
+import { userRoutes, chatRoutes,notificacionRoutes, seccionRoutes, temaRoutes, cursoRoutes} from './routes/index';
 import { ensureAdminUserExists } from './scripts/InitAdmin';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger';
@@ -41,6 +40,10 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Routes
 app.use('/user', userRoutes);
 app.use('/chat', chatRoutes);
+app.use('/notificacion', notificacionRoutes);
+app.use('/seccion', seccionRoutes);
+app.use('/tema', temaRoutes);
+app.use('/curso', cursoRoutes);
 
 // Swagger UI (OpenAPI)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

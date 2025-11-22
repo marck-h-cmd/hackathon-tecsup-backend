@@ -11,23 +11,7 @@ const authenticateClerkToken = require('../middleware/auth');
 
 const router = express.Router();
 
-/**
- * @openapi
- * /notificaciones:
- *   post:
- *     tags:
- *       - Notificacion
- *     summary: Crear una notificación
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *     responses:
- *       201:
- *         description: Notificación creada
- */
+
 router.post('/', authenticateClerkToken, createNotificacion);
 
 
