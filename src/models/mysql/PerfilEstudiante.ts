@@ -4,7 +4,6 @@ import { IPerfilEstudianteAttributes, IPerfilEstudianteCreationAttributes } from
 import User from './User';
 import { TipoInstitucion,HorarioPreferido , EstiloAprendizaje} from '../../interfaces/shared/enums';
 
-
 class PerfilEstudiante extends Model<IPerfilEstudianteAttributes, IPerfilEstudianteCreationAttributes>
   implements IPerfilEstudianteAttributes {
   
@@ -13,7 +12,7 @@ class PerfilEstudiante extends Model<IPerfilEstudianteAttributes, IPerfilEstudia
   public nombre_completo!: string;
   public nombre_institucion!: string;
   public tipo_institucion!: TipoInstitucion;
-  public carrera!: string;
+  public carrera_id?: number;
   public ciclo_actual!: number;
   public estilo_aprendizaje!: EstiloAprendizaje;
   public horario_preferido!: HorarioPreferido;
@@ -48,9 +47,9 @@ PerfilEstudiante.init(
       type: DataTypes.ENUM('universidad', 'instituto'),
       allowNull: false
     },
-    carrera: {
-      type: DataTypes.STRING(150),
-      allowNull: false
+    carrera_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
     ciclo_actual: {
       type: DataTypes.INTEGER,
@@ -105,6 +104,19 @@ User.hasOne(PerfilEstudiante, {
 PerfilEstudiante.belongsTo(User, { 
   foreignKey: 'usuario_id', 
   as: 'usuario' 
+});
+
+// Asociación a Carrera: require perezoso para evitar circular imports
+setImmediate(() => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const Carrera = require('./Carrera').default;
+    if (Carrera && typeof Carrera === 'function') {
+      PerfilEstudiante.belongsTo(Carrera, { foreignKey: 'carrera_id', as: 'carrera' });
+    }
+  } catch (err) {
+    // ignore
+  }
 });
 
 export default PerfilEstudiante;

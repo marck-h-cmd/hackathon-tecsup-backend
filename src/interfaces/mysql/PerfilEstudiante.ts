@@ -1,4 +1,3 @@
-
 import { DataTypes, Model, Optional } from 'sequelize';
 
 
@@ -13,7 +12,7 @@ export interface IPerfilEstudianteAttributes {
   // Información académica 
   nombre_institucion: string;
   tipo_institucion: TipoInstitucion;
-  carrera: string;
+  carrera_id?: number; // ahora referencia a tabla carreras
   ciclo_actual: number;
   
   // Preferencias de aprendizaje
@@ -30,13 +29,13 @@ export interface IPerfilEstudianteAttributes {
 }
 
 export interface IPerfilEstudianteCreationAttributes 
-  extends Optional<IPerfilEstudianteAttributes, 'id' | 'fecha_actualizacion'> {}
+  extends Optional<IPerfilEstudianteAttributes, 'id' | 'fecha_actualizacion' | 'carrera_id'> {}
 
   export interface IPerfilEstudianteUpdateData {
     nombre_completo?: string;
     nombre_institucion?: string;
     tipo_institucion?: TipoInstitucion;
-    carrera?: string;
+    carrera_id?: number;
     ciclo_actual?: number;
     estilo_aprendizaje?:  EstiloAprendizaje;
     horario_preferido?: HorarioPreferido;

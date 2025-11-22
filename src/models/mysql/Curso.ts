@@ -1,4 +1,3 @@
-
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../../config/database';
 
@@ -17,6 +16,7 @@ class Curso extends Model<ICursoAttributes, ICursoCreationAttributes>
   public es_publico!: boolean;
   public activo!: boolean;
   public fecha_creacion!: Date;
+  public carrera_id?: number;
 }
 
 Curso.init(
@@ -58,6 +58,10 @@ Curso.init(
       type: DataTypes.BOOLEAN,
       defaultValue: true
     },
+    carrera_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     fecha_creacion: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
@@ -71,5 +75,10 @@ Curso.init(
     updatedAt: false
   }
 );
+
+// Asociaciones mínimas (belongsTo hacia Carrera)
+// require aquí para evitar problemas de orden en imports
+import Carrera from './Carrera';
+Curso.belongsTo(Carrera, { foreignKey: 'carrera_id', as: 'carrera' });
 
 export default Curso;

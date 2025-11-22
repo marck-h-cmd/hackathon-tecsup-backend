@@ -11,10 +11,11 @@ export interface ICursoAttributes {
     es_publico: boolean;
     activo: boolean;
     fecha_creacion: Date;
+    carrera_id?: number; // relacion a carrera
   }
   
   export interface ICursoCreationAttributes 
-    extends Optional<ICursoAttributes, 'id' | 'fecha_creacion'> {}
+    extends Optional<ICursoAttributes, 'id' | 'fecha_creacion' | 'carrera_id'> {}
   
 
 export interface ICursoFilters {
@@ -33,4 +34,5 @@ export interface ICursoUpdateData {
   duracion_estimada_horas?: number;
   es_publico?: boolean;
   activo?: boolean;
+  carrera_id?: number;
 }
